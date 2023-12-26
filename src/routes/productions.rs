@@ -54,19 +54,15 @@ async fn get_products(State(client): State<Client>, Json(params): Json<DelTypes>
     Json(json!({ "data": res }))
 }
 
-async fn get_item(Query(params): Query<DelModel>, State(client): State<Client>) -> Json<Value> {
+async fn get_item(State(client): State<Client>, Json(params): Json<DelModel>) -> Json<Value> {
     let database: mongodb::Database = client.database("company");
     let collection: mongodb::Collection<Model> = database.collection("models");
     let info_doc: Document = doc! {
         "t_eng": params.t_eng,
         "name_eng": params.name_eng,
     };
-    let mut cursor: mongodb::Cursor<Model> = collection.find(info_doc, None).await.unwrap();
-    let mut res: Vec<Model> = Vec::new();
-    while cursor.advance().await.unwrap() {
-        let temp: Model = cursor.deserialize_current().unwrap();
-        res.push(temp);
-    }
+    let cursor: mongodb::Cursor<Model> = collection.find(info_doc, None).await.unwrap();
+    let res: Model = cursor.deserialize_current().unwrap();
     Json(json!({ "data": res }))
 }
 
