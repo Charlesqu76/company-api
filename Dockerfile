@@ -9,7 +9,6 @@ RUN cargo build --release
 # Build web app with own code
 RUN rm src/*.rs
 ADD . ./
-# RUN rm ./target/release/deps/company-api*
 RUN cargo build --release
 
 
