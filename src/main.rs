@@ -36,7 +36,7 @@ async fn main() {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let client: Client = Client::with_uri_str("mongodb://43.143.254.158:27017")
+    let client: Client = Client::with_uri_str("mongodb://company:company@43.143.254.158:27017/")
         .await
         .unwrap();
     let app: Router<Client> = Router::new()
